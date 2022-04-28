@@ -50,4 +50,28 @@ void main() {
       verify(() => playerMock.pause()).called(1);
     });
   });
+
+  group('Seek', () {
+    final playerMock = AudioPlayerMock();
+
+    setUp(() {
+      when(() => playerMock.seek(any())).thenAnswer((_) async {});
+    });
+
+    tearDown(() {
+      reset(playerMock);
+    });
+
+    test('should call seek properly', () async {
+      final sut = JustAudioPlayer(
+        justAudio: playerMock,
+      );
+
+      await sut.seek(position: const Duration(seconds: 1));
+      await sut.seek(position: const Duration(seconds: 3));
+
+      verify(() => playerMock.seek(const Duration(seconds: 1))).called(1);
+      verify(() => playerMock.seek(const Duration(seconds: 3))).called(1);
+    });
+  });
 }
