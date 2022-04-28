@@ -6,6 +6,8 @@ import 'package:project_trem_bala/data/gateways/music_player/just_audio_player.d
 
 class AudioPlayerMock extends Mock implements AudioPlayer {}
 
+class AudioSourceMock extends Mock implements AudioSource {}
+
 void main() {
   group('Play', () {
     final playerMock = AudioPlayerMock();
@@ -116,6 +118,46 @@ void main() {
       await sut.loadAudio(path: 'some path');
 
       verify(() => playerMock.setAsset('some path')).called(1);
+    });
+  });
+
+  group('Load audio playlist', () {
+    final playerMock = AudioPlayerMock();
+
+    setUp(() {
+      registerFallbackValue(AudioSourceMock());
+
+      when(
+        () => playerMock.setAudioSource(
+          any(),
+          initialIndex: any(named: 'initialIndex'),
+        ),
+      ).thenAnswer((_) async => null);
+    });
+
+    tearDown(() {
+      reset(playerMock);
+    });
+
+    test('should call setAudioSource properly', () async {
+      final sut = JustAudioPlayer(
+        justAudio: playerMock,
+      );
+
+      await sut.loadPlaylist(audioPaths: ['audio1.mp3', 'audio2.mp3']);
+
+      await sut.loadPlaylist(
+        audioPaths: ['audio1.mp3', 'audio2.mp3'],
+        initialIndex: 1,
+      );
+
+      verify(
+        () => playerMock.setAudioSource(any(), initialIndex: 0),
+      ).called(1);
+
+      verify(
+        () => playerMock.setAudioSource(any(), initialIndex: 1),
+      ).called(1);
     });
   });
 }

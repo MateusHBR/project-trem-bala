@@ -15,6 +15,21 @@ class JustAudioPlayer implements MusicPlayerGateway {
   }
 
   @override
+  Future<void> loadPlaylist({
+    required List<String> audioPaths,
+    int initialIndex = 0,
+  }) async {
+    final audioSource = audioPaths
+        .map((assetPath) => AudioSource.uri(Uri.parse('asset:///$assetPath')))
+        .toList();
+
+    await justAudio.setAudioSource(
+      ConcatenatingAudioSource(children: audioSource),
+      initialIndex: initialIndex,
+    );
+  }
+
+  @override
   Future<void> pause() async {
     await justAudio.pause();
   }
