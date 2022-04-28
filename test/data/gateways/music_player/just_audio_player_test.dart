@@ -74,4 +74,26 @@ void main() {
       verify(() => playerMock.seek(const Duration(seconds: 3))).called(1);
     });
   });
+
+  group('Stop', () {
+    final playerMock = AudioPlayerMock();
+
+    setUp(() {
+      when(() => playerMock.stop()).thenAnswer((_) async {});
+    });
+
+    tearDown(() {
+      reset(playerMock);
+    });
+
+    test('should call stop properly', () async {
+      final sut = JustAudioPlayer(
+        justAudio: playerMock,
+      );
+
+      await sut.stop();
+
+      verify(() => playerMock.stop()).called(1);
+    });
+  });
 }

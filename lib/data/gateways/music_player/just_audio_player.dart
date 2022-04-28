@@ -24,4 +24,8 @@ class JustAudioPlayer implements MusicPlayerGateway {
     await justAudio.seek(position);
   }
 
+  @override
+  Future<void> stop() async {
+    await justAudio.stop();
+  }
 }
