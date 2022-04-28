@@ -103,7 +103,7 @@ void main() {
     final playerMock = AudioPlayerMock();
 
     setUp(() {
-      when(() => playerMock.setAsset(any())).thenAnswer((_) async {});
+      when(() => playerMock.setAsset(any())).thenAnswer((_) async => null);
     });
 
     tearDown(() {
