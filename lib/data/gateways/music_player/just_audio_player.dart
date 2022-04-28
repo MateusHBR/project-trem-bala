@@ -10,6 +10,11 @@ class JustAudioPlayer implements MusicPlayerGateway {
   final AudioPlayer justAudio;
 
   @override
+  Future<Duration?> loadAudio({required String path}) async {
+    return await justAudio.setAsset(path);
+  }
+
+  @override
   Future<void> pause() async {
     await justAudio.pause();
   }

@@ -96,4 +96,26 @@ void main() {
       verify(() => playerMock.stop()).called(1);
     });
   });
+
+  group('Load Audio', () {
+    final playerMock = AudioPlayerMock();
+
+    setUp(() {
+      when(() => playerMock.setAsset(any())).thenAnswer((_) async {});
+    });
+
+    tearDown(() {
+      reset(playerMock);
+    });
+
+    test('should call setAsset properly', () async {
+      final sut = JustAudioPlayer(
+        justAudio: playerMock,
+      );
+
+      await sut.loadAudio(path: 'some path');
+
+      verify(() => playerMock.setAsset('some path')).called(1);
+    });
+  });
 }
