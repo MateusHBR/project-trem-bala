@@ -28,4 +28,26 @@ void main() {
       verify(() => playerMock.play()).called(1);
     });
   });
+
+  group('Pause', () {
+    final playerMock = AudioPlayerMock();
+
+    setUp(() {
+      when(() => playerMock.pause()).thenAnswer((_) async {});
+    });
+
+    tearDown(() {
+      reset(playerMock);
+    });
+
+    test('should call pause properly', () async {
+      final sut = JustAudioPlayer(
+        justAudio: playerMock,
+      );
+
+      await sut.pause();
+
+      verify(() => playerMock.pause()).called(1);
+    });
+  });
 }
